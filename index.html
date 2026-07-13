@@ -71,6 +71,21 @@
             transition: border-color 0.2s;
         }
 
+        select{
+            width:100%;
+            padding:12px;
+            border:1px solid #dcdde1;
+            border-radius:6px;
+            font-size:16px;
+            color:#2c3e50;
+            outline:none;
+            transition:.2s;
+        }
+
+        select:focus{
+            border-color:#2ecc71;
+        }
+
         input[type="number"]:focus {
             border-color: #2ecc71;
         }
@@ -100,11 +115,11 @@
 <body>
 
     <div class="converter-card">
-        <h2>Real para Dólar</h2>
+        <h2>Conversor de Moedas</h2>
         
         <!-- Campo: Taxa de Câmbio -->
         <div class="input-group">
-            <label for="exchange-rate">Taxa de Câmbio (1 USD = ? BRL)</label>
+            <label for="exchange-rate">Taxa de Câmbio</label>
             <div class="input-wrapper">
                 <span class="currency-symbol">R$</span>
                 <input type="number" id="exchange-rate" value="5.50" step="0.01" min="0.01" placeholder="Ex: 5.50">
@@ -120,6 +135,16 @@
             </div>
         </div>
 
+        <!-- Seleção da moeda -->
+        <div class="input-group">
+            <label for="currency">Converter para</label>
+
+            <select id="currency">
+                 <option value="USD">Dólar (USD)</option>
+                 <option value="EUR">Euro (EUR)</option>
+         </select>
+    </div>
+
         <!-- Painel de Resultado -->
         <div class="result-box">
             <p>Resultado Convertido</p>
@@ -132,29 +157,55 @@
         const brlInput = document.getElementById('brl-amount');
         const rateInput = document.getElementById('exchange-rate');
         const usdResult = document.getElementById('usd-result');
+        const currencySelect = document.getElementById('currency');
+
+        const exchangeRates = {
+            USD: 5.50,
+            EUR: 6.40
+        };
 
         // Função que realiza o cálculo da conversão
         function convertCurrency() {
             const brlValue = parseFloat(brlInput.value);
-            const rateValue = parseFloat(rateInput.value);
+            const currency = currencySelect.value;
+
+            rateInput.value = exchangeRates[currency];
+
+            const rateValue = exchangeRates[currency];
+
 
             // Valida se os campos possuem números válidos e maiores que zero
-            if (!isNaN(brlValue) && !isNaN(rateValue) && rateValue > 0) {
-                const usdValue = brlValue / rateValue;
-                
-                // Formata o número no padrão monetário americano (US$)
-                usdResult.textContent = usdValue.toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'USD'
+           if (!isNaN(brlValue) && !isNaN(rateValue) && rateValue > 0) {
+
+             const convertedValue = brlValue / rateValue;
+
+             if (currency === "USD") {
+
+                usdResult.textContent = convertedValue.toLocaleString('en-US', {
+                     style: 'currency',
+                     currency: 'USD'
                 });
-            } else {
-                usdResult.textContent = "$ 0,00";
+
+            } else if (currency === "EUR") {
+
+                  usdResult.textContent = convertedValue.toLocaleString('de-DE', {
+                    style: 'currency',
+                    currency: 'EUR'
+                });
+
             }
+
+        } else {
+
+             usdResult.textContent = "$ 0,00";
+
         }
+    }
 
         // Adiciona ouvintes de evento para atualizar o resultado em tempo real enquanto o usuário digita
         brlInput.addEventListener('input', convertCurrency);
         rateInput.addEventListener('input', convertCurrency);
+        currencySelect.addEventListener('change', convertCurrency);
     </script>
 
 </body>
