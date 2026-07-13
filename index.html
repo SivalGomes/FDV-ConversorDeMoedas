@@ -167,7 +167,12 @@
         // Função que realiza o cálculo da conversão
         function convertCurrency() {
             const brlValue = parseFloat(brlInput.value);
-            const rateValue = parseFloat(rateInput.value);
+            const currency = currencySelect.value;
+
+            rateInput.value = exchangeRates[currency];
+
+            const rateValue = exchangeRates[currency];
+
 
             // Valida se os campos possuem números válidos e maiores que zero
             if (!isNaN(brlValue) && !isNaN(rateValue) && rateValue > 0) {
