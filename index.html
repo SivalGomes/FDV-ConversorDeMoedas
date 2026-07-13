@@ -175,22 +175,36 @@
 
 
             // Valida se os campos possuem números válidos e maiores que zero
-            if (!isNaN(brlValue) && !isNaN(rateValue) && rateValue > 0) {
-                const usdValue = brlValue / rateValue;
-                
-                // Formata o número no padrão monetário americano (US$)
-                usdResult.textContent = usdValue.toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'USD'
+           if (!isNaN(brlValue) && !isNaN(rateValue) && rateValue > 0) {
+
+             const convertedValue = brlValue / rateValue;
+
+             if (currency === "USD") {
+
+                usdResult.textContent = convertedValue.toLocaleString('en-US', {
+                     style: 'currency',
+                     currency: 'USD'
                 });
-            } else {
-                usdResult.textContent = "$ 0,00";
+
+            } else if (currency === "EUR") {
+
+                  usdResult.textContent = convertedValue.toLocaleString('de-DE', {
+                    style: 'currency',
+                    currency: 'EUR'
+                });
+
             }
+
+        } else {
+
+             usdResult.textContent = "$ 0,00";
+
         }
 
         // Adiciona ouvintes de evento para atualizar o resultado em tempo real enquanto o usuário digita
         brlInput.addEventListener('input', convertCurrency);
         rateInput.addEventListener('input', convertCurrency);
+        currencySelect.addEventListener('change', convertCurrency);
     </script>
 
 </body>
