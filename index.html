@@ -157,6 +157,12 @@
         const brlInput = document.getElementById('brl-amount');
         const rateInput = document.getElementById('exchange-rate');
         const usdResult = document.getElementById('usd-result');
+        const currencySelect = document.getElementById('currency');
+
+        const exchangeRates = {
+            USD: 5.50,
+            EUR: 6.40
+        };
 
         // Função que realiza o cálculo da conversão
         function convertCurrency() {
